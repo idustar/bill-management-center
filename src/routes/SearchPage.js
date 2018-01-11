@@ -4,9 +4,7 @@ import {connect} from 'dva';
 import styles from './SearchPage.less';
 import Layout from '../components/Layout';
 import GenreChart from '../components/GenreChart';
-import StatChart3 from '../components/StatChart3';
 import Search from '../components/Search';
-import {dataSelector} from "../models/info/selectors";
 
 
 class SearchPage extends React.Component {

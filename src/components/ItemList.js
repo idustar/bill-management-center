@@ -1,13 +1,9 @@
 import React, {PropTypes} from 'react';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import {Link} from 'dva/router';
 import Masonry from 'react-masonry-component';
-import {Popover} from 'antd';
 import styles from './ItemList.less';
 import Spinner from './Spinner';
 import MovieItem from './ProductItem';
 import {Row, Col, Tag} from 'antd';
-import StatChart2 from './StatChart2';
 
 
 class ItemList extends React.Component {

@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Router, Route, IndexRoute, Link, Redirect } from 'dva/router';
 import ListPage from './routes/ListPage';
-import StatPage from './routes/StatPage';
 import ItemPage from './routes/ItemPage';
 import SearchPage from './routes/SearchPage';
 import UserPage from './routes/UserPage';
