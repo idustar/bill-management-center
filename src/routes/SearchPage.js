@@ -6,50 +6,39 @@ import Layout from '../components/Layout';
 import GenreChart from '../components/GenreChart';
 import StatChart3 from '../components/StatChart3';
 import Search from '../components/Search';
-import {statSelector} from "../models/stat/selectors";
+import {dataSelector} from "../models/info/selectors";
 
 
 class SearchPage extends React.Component {
   componentDidMount() {
-    if (this.props.type !== 'month') {
-      this.props.dispatch({
-        type: 'stat/fetchData',
-        payload: 'month',
-      });
-    }
+    this.props.dispatch({
+      type: 'info/fetch',
+    });
   }
 
   render() {
+    const {data} = this.props;
     const extraContent = (
       <div>
         <div className={styles.extraContent}>
           <div className={styles.statItem}>
-            <p>Movies</p>
-            <p>253059</p>
+            <p>Products</p>
+            <p>{data.productCnt || 0}</p>
           </div>
           <div className={styles.statItem}>
-            <p>Genres</p>
-            <p>584</p>
+            <p>Orders</p>
+            <p>{data.orderCnt || 0}</p>
           </div>
           <div className={styles.statItem}>
-            <p>Directors</p>
-            <p>41857</p>
+            <p>Categories</p>
+            <p>{data.categories ? data.categories.length : 0}</p>
+          </div>
+          <div className={styles.statItem}>
+            <p>Customers</p>
+            <p>{data.customerCnt || 0}</p>
           </div>
         </div>
-        <div className={styles.extraContent}>
-          <div className={styles.statItem}>
-            <p>Actors</p>
-            <p>140474</p>
-          </div>
-          <div className={styles.statItem}>
-            <p>Comments</p>
-            <p>7911684</p>
-          </div>
-          <div className={styles.statItem}>
-            <p>Users</p>
-            <p>889176</p>
-          </div>
-        </div>
+
       </div>
     );
     return (
@@ -58,27 +47,27 @@ class SearchPage extends React.Component {
           <div className={styles.header}>
             <div className={styles.titlebar}>
               <div>
-                <h1>Amazon Movies</h1>
-                {extraContent}
+                <h1>CC</h1>
+
               </div>
               <div className={styles.stat}>
-              <StatChart3
-                type={"month"} data={this.props.data}/>
+                {extraContent}
               </div>
             </div>
           </div>
+        </div>
+
+
+            <div className={styles.card}>
+              <h2>Search</h2>
+              <Search/>
+            </div>
 
 
           <div className={styles.card}>
-            <h2>Search</h2>
-            <Search simple={false}/>
+            <h2>Categories</h2>
+            <GenreChart data={data.categories}/>
           </div>
-        </div>
-
-        <div className={styles.card}>
-          <h2>Genres</h2>
-          <GenreChart/>
-        </div>
       </Layout>
     );
   }
@@ -89,8 +78,7 @@ SearchPage.propTypes = {};
 function mapStateToProps(state, ownProps) {
   return {
     loading: state.loading.global,
-    data: state.stat.data,
-    type: state.stat.type,
+    data: state.info.data,
   };
 }
 

@@ -18,10 +18,11 @@ const Layout = (props) => {
       <div className={styles.header}>
         <div className={styles.inner}>
           <Link className={styles.active} to="/">
-            Amazon Movies
+            Distributed Order System - Cloud Computing
           </Link>
           <div className={styles.search}>
-              <Link className={styles.active} to={'/stat'}><Icon type="compass" /></Link>
+            <Link className={styles.active} to={'/new'}><Icon type="gift" /></Link>
+              <Link className={styles.active} to={'/new_customer'}><Icon type="team" /></Link>
             <Popover content={content} placement="bottomRight" title="Search" trigger="click">
               <Link className={styles.active}><Icon type="search" /></Link>
             </Popover>

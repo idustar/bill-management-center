@@ -3,7 +3,7 @@ import {
   fetchMovieById, fetchMoviesByActor, fetchMoviesByDateRange, fetchMoviesByTitleLike,
   fetchMoviesByTitle, fetchMoviesByDirector, fetchMoviesByGenre, fetchMovieComment, fetchUserComment,
   fetchMovies, fetchMoviesByTitleContain, fetchMoviesCom, fetchMoviesById, fetchActors, fetchDirectors
-} from '../../services/movie';
+} from '../../services/api';
 
 export default {
   namespace: 'movie',
@@ -32,7 +32,7 @@ export default {
           dispatch({type: 'fetchMovie', payload: movieId});
           return;
         }
-        match = pathToRegexp('/user/:user/:page').exec(pathname);
+        match = pathToRegexp('/customer/:customer/:page').exec(pathname);
         if (match) {
           const [, user, page] = match;
           dispatch({type: 'fetchCommentsByUser', payload: {id: user, page}});

@@ -1,9 +1,10 @@
 import React from 'react';
-import {Form, Icon, Input, Button, Checkbox, DatePicker, Switch} from 'antd';
-import {Link} from 'dva/router';
+import {Form, Icon, Input, Button, Select, Checkbox, DatePicker, Switch} from 'antd';
+import {Link, routerRedux} from 'dva/router';
 import {connect} from 'dva/index';
-import {searchSelector} from '../models/search/selectors';
+import {searchSelector} from '../models/info/selectors';
 import styles from './Search.less';
+
 
 const Searchs = Input.Search;
 const RangePicker = DatePicker.RangePicker;
@@ -16,9 +17,8 @@ class Search extends React.Component {
       open: true,
     };
     this.handleChange = this.handleChange.bind(this);
-    this.handleDateChange = this.handleDateChange.bind(this);
+    this.handleTypeChange = this.handleTypeChange.bind(this);
     this.search = this.search.bind(this);
-    this.handleLikeChange = this.handleLikeChange.bind(this);
   }
 
   toggle = () => {
@@ -28,15 +28,24 @@ class Search extends React.Component {
   }
 
   search() {
-    this.props.dispatch({
-      type: 'search/search',
-      payload: {},
-    })
+    const {search, dispatch} = this.props;
+    console.log(search);
+    if (search.type === 'product') {
+      const title = search.title ? `title=${search.title}` : '';
+      const category = search.category ? `category=${search.category}` : '';
+      dispatch(routerRedux.push('/products'+((title || category)?'?':'') + title + ((title && category)?'&':'') + category));
+    } else if (search.type === 'order') {
+      if (!search.title) dispatch(routerRedux.push('/orders'));
+      else dispatch(routerRedux.push(`/order/${search.title}`));
+    } else if (search.type === 'customer') {
+      if (!search.title) dispatch(routerRedux.push('/customers'));
+      else dispatch(routerRedux.push(`/customer/${search.title}`));
+    }
   }
 
   handleChange(event) {
     this.props.dispatch({
-      type: 'search/changeFormValue',
+      type: 'info/changeFormValue',
       payload: {
         key: event.target.dataset.for,
         value: event.target.value,
@@ -44,69 +53,44 @@ class Search extends React.Component {
     })
   }
 
-  handleDateChange(dates, dateStrings) {
+  handleTypeChange(value) {
     this.props.dispatch({
-      type: 'search/changeFormValue',
+      type: 'info/changeFormValue',
       payload: {
-        key: 'dates',
-        value: dates,
-      }
-    })
-    this.props.dispatch({
-      type: 'search/changeFormValue',
-      payload: {
-        key: 'dateStr',
-        value: dateStrings,
-      }
-    })
-  }
-
-  handleLikeChange(e) {
-    this.props.dispatch({
-      type: 'search/changeFormValue',
-      payload: {
-        key: 'like',
-        value: e.target.checked,
+        key: 'type',
+        value,
       }
     })
   }
 
   render() {
-    const {simple, form} = this.props;
-
+    const {search} = this.props;
+    const selectBefore = (
+      <Select defaultValue={search.type} style={{ width: 90 }} data-for="type" onChange={this.handleTypeChange}>
+        <Select.Option value="product">product</Select.Option>
+        <Select.Option value="customer">customer</Select.Option>
+        <Select.Option value="order">order</Select.Option>
+      </Select>
+    );
+    const placeholders = {
+      product: 'product title', customer: 'blank for query all, or customer id', order: 'blank for query all, or order id',
+    }
     return (
       <div>
 
-        <Searchs size="large" placeholder="MOVIE TITLE" data-for="title"
+        <Searchs size="large" data-for="title" placeholder={placeholders[search.type]}
+                 addonBefore={selectBefore}
                  onSearch={this.search}
-                 defaultValue={form.title}
+                 defaultValue={search.title}
                  enterButton onChange={this.handleChange}/>
-        <div className={styles.infobar}>
-          {simple?null:<div className={styles.switch}>
-            <Switch defaultChecked={this.state.open}
-                  onChange={this.toggle}/><span>&nbsp;&nbsp;&nbsp;SHOW MORE OPTIONS&nbsp;&nbsp;&nbsp;</span>
-          </div>}
-          <Checkbox defaultChecked={form.like} onChange={this.handleLikeChange}>Phrase Query(only movie title is available)</Checkbox>
-        </div>
-        <div className={styles.select}>
+        <div>
+            <div>
+              {search.type === 'product' ?
+              <Input addonBefore="Category" data-for="category" style={{marginTop: 10}}
+                     placeholder="CATEGORY NAME" defaultValue={search.category} onChange={this.handleChange}/>
+                : null}
+            </div>
 
-          {this.state.open ? (<div>
-            <div>
-              <Input addonBefore="Actor" data-for="actor"
-                     placeholder="ACTOR NAME" defaultValue={this.props.form.actor} onChange={this.handleChange}/>
-            </div>
-            <div>
-              <Input addonBefore="Director" data-for="director"
-                     defaultValue={this.props.form.director} placeholder="DIRECTOR NAME"
-                     onChange={this.handleChange}/>
-            </div>
-            <div>
-              <Input addonBefore="Genre" data-for="genre"
-                     defaultValue={this.props.form.genre} placeholder="GENRE" onChange={this.handleChange}/>
-            </div>
-            <RangePicker format={'YYYY-MM-DD'} allowClear data-for="dates"
-                         defaultValue={this.props.form.dates} onChange={this.handleDateChange}/>
-          </div>) : null}
         </div>
 
 

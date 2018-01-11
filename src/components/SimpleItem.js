@@ -10,19 +10,19 @@ import {host, timeAgo} from '../utils/filters';
 const SimpleItem = ({item}) => {
 
   const {
-    link,
-    title,
-    content,
+    customerId,
+    orderCnt
   } = item;
 
   const goto = () => {
-    hashHistory.push(item.link);
+    hashHistory.push(`customer/${customerId}`);
   }
 
   return (
     <div className={styles.normal}>
-      <Tooltip placement="bottom" title={title}>
-      <Card title={title} bordered={false} onClick={goto}>{content}</Card>
+      <Tooltip placement="bottom" title={customerId}>
+      <Card title={customerId} bordered={false} onClick={goto}>
+        {orderCnt?`${orderCnt} ${orderCnt === 1?'orders':'order'}.`:'no order.'}</Card>
       </Tooltip>
     </div>
   );

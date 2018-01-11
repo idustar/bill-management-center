@@ -1,5 +1,5 @@
 import {routerRedux} from 'dva/router';
-import {fetchStatByType} from "../../services/movie";
+import {fetchStatByType} from "../../services/api";
 
 export default {
   namespace: 'stat',

@@ -1,6 +1,6 @@
 import {routerRedux} from 'dva/router';
 import { hashHistory } from 'react-router';
-import {fetchMovieById, fetchMovieComment} from "../../services/movie";
+import {fetchMovieById, fetchMovieComment} from "../../services/api";
 
 export default {
   namespace: 'search',

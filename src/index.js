@@ -14,11 +14,10 @@ const app = dva();
 app.use(createLoading());
 
 // 3. Model
-app.model(require('./models/user'));
-app.model(require('./models/movies'));
-app.model(require('./models/search'));
-app.model(require('./models/stat'));
-
+app.model(require('./models/product'));
+app.model(require('./models/order'));
+app.model(require('./models/info'));
+app.model(require('./models/customer'));
 // 4. Router
 app.router(require('./router'));
 
