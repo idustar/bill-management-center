@@ -1,12 +1,10 @@
-# DW Frontend
+# bill-management-center
 
 Clone built with [Dva](https://github.com/dvajs/dva).
 
 ## Demo
 
 [Live Demo](https://data-warehouse.azurewebsites.net)
-
-## TODO
 
 ## Run Locally
 
